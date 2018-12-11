@@ -1,5 +1,4 @@
 ﻿const B2 = require("backblaze-b2");
-const fs = require("fs");
 
 module.exports.uploadFile = async (fileName, fileData) => {
     console.log("uploaded started");

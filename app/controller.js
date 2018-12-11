@@ -61,10 +61,14 @@ app.post("/new", upload.single("img"), async (req, res, next) => {
     postBean.author = req.body.author;
     postBean.img = imgPrefix + req.file.originalname;
     postBean.desc = req.body.desc;
-    b2stor.uploadFile(req.file.originalname, req.file.buffer, () => {
-        dao.newPost(postBean, () => {
+    b2stor.uploadFile(req.file.originalname, req.file.buffer, (err) => {
+        if (err) {
             res.redirect("/adminpanel");
-        })
+        } else {
+            dao.newPost(postBean, () => {
+                res.redirect("/adminpanel");
+            });
+        }
     });
 });
 
