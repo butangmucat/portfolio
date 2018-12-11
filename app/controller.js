@@ -61,9 +61,11 @@ app.post("/new", upload.single("img"), async (req, res, next) => {
     postBean.author = req.body.author;
     postBean.img = imgPrefix + req.file.originalname;
     postBean.desc = req.body.desc;
-    await b2stor.uploadFile(req.file.originalname, req.file.buffer);
-    await dao.newPost(postBean);
-    res.redirect("/adminpanel");
+    b2stor.uploadFile(req.file.originalname, req.file.buffer, () => {
+        dao.newPost(postBean, () => {
+            res.redirect("/adminpanel");
+        })
+    });
 });
 
 // logged in users gets redirected to adminpanel
@@ -108,8 +110,15 @@ app.post("/login", upload.none(), (req, res, next) => {
 
 // show post
 app.get("/post", (req, res, next) => {
-    var postBean = dao.getPost(req.query.postid);
-    res.render("post", postBean);
+    dao.getPost(req.query.postid, (err, doc) => {
+        if (!err) {
+            console.log("rendering post")
+            res.render("post", doc);
+        } else {
+            console.log(error);
+            res.redirect("/");
+        }
+    });
 });
 
 // index page
