@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>{{action}} Post</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/skeleton.css">
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+        <div class="twelve columns" style="margin-top: 5%">
+            <h1>{{action}} Post</h1>
+            <p></p>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="{{dest}}">
+            <input type="hidden" name="postid" value="{{postid}}" />
+            <input type="hidden" name="author" value="{{author}}" />
+            <div class="twelve columns">
+                <p>Image to upload: </p>
+                <input type="file" name="img" />
+            </div>
+            <div class="twelve columns">
+                <input type="text" name="title" placeholder="Title" />
+                <p>Image description: </p>
+                <textarea class="u-full-width" placeholder="Here is supposed to be a rich text or markdown editor …" name="desc"></textarea>
+            </div>
+            <div class="twelve columns">
+                <input class="button-primary" type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

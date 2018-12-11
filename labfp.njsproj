@@ -18,6 +18,9 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="data\config.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="readme.txt">
@@ -29,19 +32,20 @@
     <Content Include="views\assets\css\skeleton.css" />
     <Content Include="views\assets\css\style.css" />
     <Content Include="views\assets\img\favicon.png" />
-    <Content Include="views\adminpanel.html" />
-    <Content Include="views\index.html" />
+    <Content Include="views\adminpanel.hbs" />
+    <Content Include="views\index.hbs" />
     <Content Include="views\boilerplate_materialize.html" />
     <Content Include="views\boilerplate_skeleton.html" />
-    <Content Include="views\login.html" />
+    <Content Include="views\login.hbs" />
     <Content Include="views\media\000012750020_DxO.jpg" />
     <Content Include="views\media\000012750021_DxO.jpg" />
     <Content Include="views\media\000012750022_DxO.jpg" />
-    <Content Include="views\post.html" />
-    <Content Include="views\edit.html" />
+    <Content Include="views\post.hbs" />
+    <Content Include="views\edit.hbs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app" />
+    <Folder Include="data\" />
     <Folder Include="views" />
     <Folder Include="views\assets\" />
     <Folder Include="views\assets\css\" />
@@ -50,6 +54,17 @@
     <Folder Include="views\media\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="app\controller.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\server.js" />
+    <Compile Include="app\web_logging.js" />
+    <Compile Include="data\b2stor.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="data\mongoose_dao.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="views\assets\js\init.js" />
     <Compile Include="views\assets\js\materialize.js" />
     <Compile Include="views\assets\js\materialize.min.js" />
