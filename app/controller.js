@@ -64,13 +64,13 @@ app.post("/new", upload.single("img"), async (req, res, next) => {
     postBean.title = req.body.title;
     postBean.author = req.body.author;
     postBean.time = moment().unix();
-    postBean.img = imgPrefix + imgName + imgType;
+    postBean.img = imgPrefix + imgName + "." + imgType;
     postBean.desc = req.body.desc;
     azurestor.uploadFile(imgName, imgType, req.file.buffer, (err) => {
         if (err) {
             res.redirect("/adminpanel");
         } else {
-            dao.newPost(postBean, () => {
+            dao.newPost(postBean, (err) => {
                 res.redirect("/adminpanel");
             });
         }

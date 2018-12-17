@@ -7,7 +7,7 @@ const storContainer = "imgs"
 const azure = require("azure-storage");
 const blobSvc = azure.createBlobService(storAccount, storKey);
 
-module.exports.uploadFile = async (fileName, fileExt, fileData) => {
+module.exports.uploadFile = (fileName, fileExt, fileData, callback) => {
     console.log("uploaded started");
 
     // try locating the storage container
@@ -19,12 +19,12 @@ module.exports.uploadFile = async (fileName, fileExt, fileData) => {
             throw err;
         } else {
             // upload the file
-            blobSvc.createBlockBlobFromStream(storContainer, fileName + fileExt, fileData, (err, resu, resp) => {
+            blobSvc.createBlockBlobFromText(storContainer, fileName + "." + fileExt, fileData, (err, resu, resp) => {
                 if (err) {
                     console.log("Error uploading blob: " + err);
-                    throw err;
+                    callback(err);
                 } else {
-                    return fileName + fileExt;
+                    callback(null);
                 }
             });
         }

@@ -33,16 +33,19 @@ module.exports.newPost = (postStruct, callback) => {
     post.postid = postStruct.postid;
     post.title = postStruct.title;
     post.author = postStruct.author;
+    post.time = postStruct.time;
     post.img = postStruct.img;
     post.desc = postStruct.desc;
-    post.save((err, callback) => {
+    post.save((err) => {
         if (err) {
             console.log("error creating post:" + err);
+            conn.close();
+            callback(err);
         } else {
             console.log("new post created");
+            conn.close();
+            callback(null);
         }
-        conn.close();
-        callback(null);
     });
     
 }
@@ -59,6 +62,5 @@ module.exports.getPost = (postId, callback) => {
             conn.close();
             callback(err, doc);
         }
-        conn.close();
     });
 }
