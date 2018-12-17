@@ -1,27 +1,28 @@
 ﻿const mongoose = require("mongoose");
-// encode url here for now
-const url = "mongodb://ds062097.mlab.com:62097/tombusijieportfolio";
+// encode url here for now: azure cosmos db
+const url = "mongodb://cs376afinalfall18.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const PostSchema = new Schema({
-    post: ObjectId,
-    postid: String,
-    title: String,
-    author: String,
-    img: String,
-    desc: String
+    post: objectId,
+    postid: string,
+    title: string,
+    author: string,
+    time: long,
+    img: string,
+    desc: string
 });
 
 // encode credentials here for now
 const connectionParameters = {
-    user: "tombusijieportfolio",
-    pass: "tombusijieportfolio0001",
+    user: "cs376afinalfall18",
+    pass: "vrUPQ3V8uHnbdigZTXlqXWBizmbD0vK9uYDo7Bwt0oC4VkDnBbZac8mrcpIApniAcdL8DAKjVcqem9j8LQ7mrA==",
     useNewUrlParser: true
 };
 
-// connect to mlab
+// connect to database
 const conn = mongoose.createConnection(url, connectionParameters);
 
 const PostModel = conn.model('post', PostSchema);
@@ -35,11 +36,10 @@ module.exports.newPost = (postStruct, callback) => {
     post.img = postStruct.img;
     post.desc = postStruct.desc;
     post.save((err, callback) => {
-        if (!err) {
-            console.log("new post created");
+        if (err) {
+            console.log("error creating post:" + err);
         } else {
-            console.log(err);
-
+            console.log("new post created");
         }
         conn.close();
         callback(null);

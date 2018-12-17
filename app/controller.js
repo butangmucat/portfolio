@@ -1,9 +1,11 @@
 ﻿const express = require("express");
 const session = require("express-session");
 const multer = require("multer"); // parse multipart form
-const uuidv4 = require("uuid/v4"); // generate post id
+const uuidv4 = require("uuid/v4"); // generate post and img id
+const fileType = require("file-type"); // determine image type
+const moment = require("moment"); // get unix timestamp
 const hbs = require("hbs");
-const b2stor = require("../data/b2stor"); // backblaze b2 storage service
+const azurestor = require("../data/azurestor"); // azure storage service
 const dao = require("../data/mongoose_dao"); // mongodb
 const web_logging_setup = require("./web_logging").setupWebLog;
 
@@ -55,13 +57,16 @@ app.get("/new", (req, res) => {
 app.post("/new", upload.single("img"), async (req, res, next) => {
     let postBean = new Object();
     // hard-code for now
-    let imgPrefix = "https://img.tombu.info/file/tombusijieportfolio/tombusijieportfolio/";
+    let imgPrefix = "https://img.tombu.info/imgs/";
+    let imgName = uuidv4();
+    let imgType = fileType(req.file.buffer)["ext"];
     postBean.postid = req.body.postid;
     postBean.title = req.body.title;
     postBean.author = req.body.author;
-    postBean.img = imgPrefix + req.file.originalname;
+    postBean.time = moment().unix();
+    postBean.img = imgPrefix + imgName + imgType;
     postBean.desc = req.body.desc;
-    b2stor.uploadFile(req.file.originalname, req.file.buffer, (err) => {
+    azurestor.uploadFile(imgName, imgType, req.file.buffer, (err) => {
         if (err) {
             res.redirect("/adminpanel");
         } else {
