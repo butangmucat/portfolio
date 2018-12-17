@@ -1,6 +1,13 @@
 ﻿const mongoose = require("mongoose");
 // encode url here for now: azure cosmos db
-const url = "mongodb://cs376afinalfall18.documents.azure.com:10255/?ssl=true&replicaSet=globaldb";
+const url = "mongodb://cs376afinalfall18.documents.azure.com:10255/cs376afinalfall18?ssl=true&replicaSet=globaldb";
+
+// encode credentials here for now
+const connectionParameters = {
+    user: "cs376afinalfall18",
+    pass: "vrUPQ3V8uHnbdigZTXlqXWBizmbD0vK9uYDo7Bwt0oC4VkDnBbZac8mrcpIApniAcdL8DAKjVcqem9j8LQ7mrA==",
+    useNewUrlParser: true
+};
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -14,13 +21,6 @@ const PostSchema = new Schema({
     img: String,
     desc: String
 });
-
-// encode credentials here for now
-const connectionParameters = {
-    user: "cs376afinalfall18",
-    pass: "vrUPQ3V8uHnbdigZTXlqXWBizmbD0vK9uYDo7Bwt0oC4VkDnBbZac8mrcpIApniAcdL8DAKjVcqem9j8LQ7mrA==",
-    useNewUrlParser: true
-};
 
 // connect to database
 const conn = mongoose.createConnection(url, connectionParameters);
