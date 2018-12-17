@@ -6,13 +6,13 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const PostSchema = new Schema({
-    post: objectId,
-    postid: string,
-    title: string,
-    author: string,
-    time: long,
-    img: string,
-    desc: string
+    post: ObjectId,
+    postid: String,
+    title: String,
+    author: String,
+    time: Number,
+    img: String,
+    desc: String
 });
 
 // encode credentials here for now
