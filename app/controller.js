@@ -145,6 +145,7 @@ app.post("/login", upload.none(), csrfProtection, (req, res, next) => {
 
     if (errorMessage.length > 0) {
         log.error("Error logging in:", errorMessage);
+        res.status(401);
         res.render('login', {
             csrfToken: req.csrfToken()
         });
@@ -192,6 +193,7 @@ app.get("/", (req, res, next) => {
 
 // default route page
 app.use((req, res, next) => {
+    res.status(404);
     res.redirect("/");
 });
 
