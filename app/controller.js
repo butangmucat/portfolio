@@ -90,7 +90,7 @@ app.post("/new", upload.single("img"), csrfProtection, (req, res, next) => {
                 if (err) {
                     log.error(err);
                 }
-                res.redirect("/adminpanel");
+                res.redirect("/post/" + postBean.postid);
             });
         } else {
             log.error(err);
