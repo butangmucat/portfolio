@@ -53,28 +53,28 @@ module.exports.newPost = (postStruct, callback) => {
 // find a post
 module.exports.getPost = (postId, callback) => {
     var id = postId;
-    PostModel.findOne({postid: id}).lean().exec((err, doc) => {
+    PostModel.findOne({postid: id}, {}, {lean: true}, (err, res) => {
         if (!err) {
             console.log(`entry found: ${postId}`);
             conn.close();
-            callback(err, doc);
+            callback(err, res);
         } else {
             conn.close();
-            callback(err, doc);
+            callback(err, res);
         }
     });
 }
 
 // list all posts
 module.exports.getAllPosts = (callback) => {
-    PostModel.find({}).sort({time: -1}).lean().exec((err, doc) => {
+    PostModel.find({}, {}, {sort: {time: -1}, lean: true}, (err, res) => {
         if (!err) {
             console.log("getting all entries");
             conn.close();
-            callback(err, doc);
+            callback(err, res);
         } else {
             conn.close();
-            callback(err, doc);
+            callback(err, res);
         }
     });
 }
@@ -82,7 +82,7 @@ module.exports.getAllPosts = (callback) => {
 // delete a post
 module.exports.delPost = (postId, callback) => {
     var id = postId;
-    PostModel.findOneAndRemove({ postid: id }, (err) => {
+    PostModel.findOneAndRemove({postid: id}, (err) => {
         if (!err) {
             console.log(`entry deleted: ${postId}`);
             conn.close();

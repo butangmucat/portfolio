@@ -138,7 +138,9 @@ app.post("/login", upload.none(), csrfProtection, (req, res, next) => {
 
     if (errorMessage.length > 0) {
         console.log("Error logging in:", errorMessage);
-        res.render('login');
+        res.render('login', {
+            csrfToken: req.csrfToken()
+        });
     } else {
         console.log("logged in");
         req.session.user = userId;
@@ -155,7 +157,9 @@ app.get("/post/*", (req, res, next) => {
         dao.getPost(postid[0], (err, doc) => {
             if (!err) {
                 console.log("rendering post");
-                res.render("post", doc);
+                res.render("post", {
+                    post: doc
+                });
             } else {
                 console.log(error);
                 res.redirect("/");
