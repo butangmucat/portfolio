@@ -30,17 +30,18 @@ app.set("view engine", "hbs");
 app.use(express.static(__dirname + "/../views/"));
 
 // access the admin panel
-app.get("/adminpanel", (req, res) => {
+app.get("/adminpanel", csrfProtection, (req, res) => {
     if (req.session.user != null) { // authorized
         console.log(`authorized user: ${req.session.user}`);
         dao.getAllPosts((err, doc) => {
-            if (err) {
-                console.log(error);
-                res.render("adminpanel", null);
-            } else {
+            if (!err) {
+                console.log("rendering admin panel with post list")
                 res.render("adminpanel", {
                     posts: doc
                 });
+            } else {
+                console.log(error);
+                res.render("adminpanel", null);
             }
         });
     } else { // unauthorized
@@ -50,7 +51,7 @@ app.get("/adminpanel", (req, res) => {
 });
 
 // new post page
-app.get("/new", (req, res) => {
+app.get("/new", csrfProtection, (req, res) => {
     if (req.session.user != null) { // authorized
         console.log(`authorized user: ${req.session.user}`);
         id = uuidv4();
@@ -81,12 +82,12 @@ app.post("/new", upload.single("img"), csrfProtection, (req, res, next) => {
     postBean.img = imgPrefix + imgName + "." + imgType;
     postBean.desc = validator.escape(req.body.desc);
     azurestor.uploadFile(imgName, imgType, req.file.buffer, (err) => {
-        if (err) {
-            res.redirect("/adminpanel");
-        } else {
+        if (!err) {
             dao.newPost(postBean, (err) => {
                 res.redirect("/adminpanel");
             });
+        } else {
+            res.redirect("/adminpanel");
         }
     });
 });
@@ -103,7 +104,7 @@ app.post("/del", upload.none(), csrfProtection, (req, res, next) => {
 });
 
 // logged in users gets redirected to adminpanel
-app.get("/login", (req, res) => {
+app.get("/login", csrfProtection, (req, res) => {
     if (req.session.user != null) { // logged in
         console.log(`authorized user: ${req.session.user}`);
         res.redirect("adminpanel");
@@ -139,6 +140,7 @@ app.post("/login", upload.none(), csrfProtection, (req, res, next) => {
         console.log("Error logging in:", errorMessage);
         res.render('login');
     } else {
+        console.log("logged in");
         req.session.user = userId;
         res.redirect("/adminpanel");
     }
@@ -146,28 +148,33 @@ app.post("/login", upload.none(), csrfProtection, (req, res, next) => {
 
 // show post
 app.get("/post/*", (req, res, next) => {
-    let postid = uuidRegEx().exec(req.path)[0];
-    dao.getPost(postid, (err, doc) => {
-        if (err) {
-            console.log(error);
-            res.redirect("/");
-        } else {
-            console.log("rendering post");
-            res.render("post", doc);
-        }
-    });
+    let postid = uuidRegEx().exec(req.path);
+    if (!postid) {
+        res.redirect("/");
+    } else {
+        dao.getPost(postid[0], (err, doc) => {
+            if (!err) {
+                console.log("rendering post");
+                res.render("post", doc);
+            } else {
+                console.log(error);
+                res.redirect("/");
+            }
+        });
+    }
 });
 
 // index page
 app.get("/", (req, res, next) => {
     dao.getAllPosts((err, doc) => {
-        if (err) {
-            console.log(error);
-            res.render("index", null);
-        } else {
+        if (!err) {
+            console.log("rendering home page")
             res.render("index", {
                 posts: doc
             });
+        } else {
+            console.log(error);
+            res.render("index", null);
         }
     });
 });

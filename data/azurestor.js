@@ -3,6 +3,7 @@ const storContainer = process.env.AZURE_STORAGE_CONTAINER;
 
 // azure storage sdk
 const azure = require("azure-storage");
+console.log(process.env.AZURE_STORAGE_CONNECTION_STRING);
 const blobSvc = azure.createBlobService();
 
 module.exports.uploadFile = (fileName, fileExt, fileData, callback) => {

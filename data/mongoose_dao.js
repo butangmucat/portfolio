@@ -53,7 +53,7 @@ module.exports.newPost = (postStruct, callback) => {
 // find a post
 module.exports.getPost = (postId, callback) => {
     var id = postId;
-    PostModel.findOne({ postid: id }).lean().exec((err, doc) => {
+    PostModel.findOne({postid: id}).lean().exec((err, doc) => {
         if (!err) {
             console.log(`entry found: ${postId}`);
             conn.close();
@@ -82,7 +82,7 @@ module.exports.getAllPosts = (callback) => {
 // delete a post
 module.exports.delPost = (postId, callback) => {
     var id = postId;
-    PostModel.findOneAndRemove({ postid: id }).lean().exec((err) => {
+    PostModel.findOneAndRemove({ postid: id }, (err) => {
         if (!err) {
             console.log(`entry deleted: ${postId}`);
             conn.close();
