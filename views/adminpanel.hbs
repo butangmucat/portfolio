@@ -35,7 +35,19 @@
     <div class="row">
       <div class="twelve columns" style="margin-top: 5%">
         <h4>Admin Panel</h4>
-        <p>This is the admin panel, at least it should have a post list and site status overview. However I have no idea about its layout and functions. TODO: Admin panel.</p>
+        <h5>Published Posts</h5>
+        <ul>
+          {{#each posts}}
+          <li>
+            <a href="/post/{{this.postid}}" target="_blank">{{this.title}}</a>
+            <form method="post" enctype="multipart/form-data" action="/del">
+              <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+              <input type="hidden" name="postid" value="{{this.postid}}" />
+              <input class="button-primary" type="submit" value="Delete" /> 
+            </form>
+          </li>
+          {{/each}}
+        </ul>
         <p><button onclick="location.href='/new';">New Post</button></p>
       </div>
     </div>

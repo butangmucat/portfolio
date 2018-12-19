@@ -32,6 +32,7 @@
             <p></p>
         </div>
         <form method="post" enctype="multipart/form-data" action="{{dest}}">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             <input type="hidden" name="postid" value="{{postid}}" />
             <input type="hidden" name="author" value="{{author}}" />
             <div class="twelve columns">

@@ -1,11 +1,11 @@
 ﻿const mongoose = require("mongoose");
 // encode url here for now: azure cosmos db
-const url = "mongodb://cs376afinalfall18.documents.azure.com:10255/cs376afinalfall18?ssl=true&replicaSet=globaldb";
+const url = process.env.MONGO_CONN_STR;
 
 // encode credentials here for now
 const connectionParameters = {
-    user: "cs376afinalfall18",
-    pass: "vrUPQ3V8uHnbdigZTXlqXWBizmbD0vK9uYDo7Bwt0oC4VkDnBbZac8mrcpIApniAcdL8DAKjVcqem9j8LQ7mrA==",
+    user: process.env.MONGO_USER,
+    pass: process.env.MONGO_PASSWD,
     useNewUrlParser: true
 };
 
@@ -61,6 +61,35 @@ module.exports.getPost = (postId, callback) => {
         } else {
             conn.close();
             callback(err, doc);
+        }
+    });
+}
+
+// list all posts
+module.exports.getAllPosts = (callback) => {
+    PostModel.find({}).sort({time: -1}).lean().exec((err, doc) => {
+        if (!err) {
+            console.log("getting all entries");
+            conn.close();
+            callback(err, doc);
+        } else {
+            conn.close();
+            callback(err, doc);
+        }
+    });
+}
+
+// delete a post
+module.exports.delPost = (postId, callback) => {
+    var id = postId;
+    PostModel.findOneAndRemove({ postid: id }).lean().exec((err) => {
+        if (!err) {
+            console.log(`entry deleted: ${postId}`);
+            conn.close();
+            callback(null);
+        } else {
+            conn.close();
+            callback(err);
         }
     });
 }

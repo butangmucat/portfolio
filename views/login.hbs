@@ -39,6 +39,7 @@
       </div>
       <form method="post" enctype="multipart/form-data" action="/login">
           <div class="six columns">
+              <input type="hidden" name="_csrf" value="{{csrfToken}}" />
               <input class="u-full-width" placeholder="Username" type="text" name="uname" />
               <input class="u-full-width" placeholder="Password" type="password" name="passwd" />
           </div>
