@@ -5,6 +5,7 @@ const uuidv4 = require("uuid/v4"); // generate post and img id
 const fileType = require("file-type"); // determine image type
 const moment = require("moment"); // get unix timestamp
 const hbs = require("hbs");
+const validator = require("validator");
 const azurestor = require("../data/azurestor"); // azure storage service
 const dao = require("../data/mongoose_dao"); // mongodb
 const web_logging_setup = require("./web_logging").setupWebLog;
@@ -57,15 +58,15 @@ app.get("/new", (req, res) => {
 app.post("/new", upload.single("img"), async (req, res, next) => {
     let postBean = new Object();
     // hard-code for now
-    let imgPrefix = "https://img.tombu.info/imgs/";
+    let imgPrefix = process.env.IMG_PREFIX;
     let imgName = uuidv4();
     let imgType = fileType(req.file.buffer)["ext"];
-    postBean.postid = req.body.postid;
-    postBean.title = req.body.title;
-    postBean.author = req.body.author;
+    postBean.postid = validator.escape(req.body.postid);
+    postBean.title = validator.escape(req.body.title);
+    postBean.author = validator.escape(req.body.author);
     postBean.time = moment().unix();
     postBean.img = imgPrefix + imgName + "." + imgType;
-    postBean.desc = req.body.desc;
+    postBean.desc = validator.escape(req.body.desc);
     azurestor.uploadFile(imgName, imgType, req.file.buffer, (err) => {
         if (err) {
             res.redirect("/adminpanel");
@@ -92,8 +93,8 @@ app.get("/login", (req, res) => {
 
 // for now let me borrow the reverse credential trick
 app.post("/login", upload.none(), (req, res, next) => {
-    let userId = req.body.uname.toString().trim();
-    let password = req.body.passwd.toString().trim();
+    let userId = validator.escape(req.body.uname.toString().trim());
+    let password = validator.escape(req.body.passwd.toString().trim());
     let errorMessage = [];
 
     if (!userId || userId.length == 0) {
