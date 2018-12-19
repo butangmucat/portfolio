@@ -41,7 +41,7 @@
           <li>
             <a href="/post/{{this.postid}}" target="_blank">{{this.title}}</a>
             <form method="post" enctype="multipart/form-data" action="/del">
-              <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+              <input type="hidden" name="_csrf" value="{{@root.csrfToken}}" />
               <input type="hidden" name="postid" value="{{this.postid}}" />
               <input class="button-primary" type="submit" value="Delete" /> 
             </form>

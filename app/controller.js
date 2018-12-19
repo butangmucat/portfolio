@@ -6,7 +6,7 @@ const fileType = require("file-type"); // determine image type
 const moment = require("moment"); // get unix timestamp
 const validator = require("validator"); // sanstize input
 const csurf = require("csurf"); // express csrf protection middleware
-const uuidRegEx = require('uuid-regexp')
+const uuidRegEx = require('uuid-regexp'); // for extracting uuid-formatted post id
 const hbs = require("hbs");
 const azurestor = require("../data/azurestor"); // azure storage service
 const dao = require("../data/mongoose_dao"); // mongodb
@@ -37,7 +37,8 @@ app.get("/adminpanel", csrfProtection, (req, res) => {
             if (!err) {
                 console.log("rendering admin panel with post list")
                 res.render("adminpanel", {
-                    posts: doc
+                    posts: doc,
+                    csrfToken: req.csrfToken()
                 });
             } else {
                 console.log(error);

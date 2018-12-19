@@ -39,11 +39,9 @@ module.exports.newPost = (postStruct, callback) => {
     post.save((err) => {
         if (err) {
             console.log("error creating post:" + err);
-            conn.close();
             callback(err);
         } else {
             console.log("new post created");
-            conn.close();
             callback(null);
         }
     });
@@ -56,10 +54,8 @@ module.exports.getPost = (postId, callback) => {
     PostModel.findOne({postid: id}, {}, {lean: true}, (err, res) => {
         if (!err) {
             console.log(`entry found: ${postId}`);
-            conn.close();
             callback(err, res);
         } else {
-            conn.close();
             callback(err, res);
         }
     });
@@ -70,10 +66,8 @@ module.exports.getAllPosts = (callback) => {
     PostModel.find({}, {}, {sort: {time: -1}, lean: true}, (err, res) => {
         if (!err) {
             console.log("getting all entries");
-            conn.close();
             callback(err, res);
         } else {
-            conn.close();
             callback(err, res);
         }
     });
@@ -85,10 +79,8 @@ module.exports.delPost = (postId, callback) => {
     PostModel.findOneAndRemove({postid: id}, (err) => {
         if (!err) {
             console.log(`entry deleted: ${postId}`);
-            conn.close();
             callback(null);
         } else {
-            conn.close();
             callback(err);
         }
     });
